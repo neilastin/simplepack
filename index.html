@@ -608,7 +608,7 @@
 
         <div class="tabs">
             <div class="tab active" data-tab="packing">Pack</div>
-            <div class="tab" data-tab="shopping">Shop</div>
+            <div class="tab" data-tab="shopping">Shop <span id="shopping-count">(0)</span></div>
         </div>
 
         <div id="packing-view">
@@ -941,12 +941,27 @@
                 
                 this.renderProgress();
                 this.renderCategories();
+                this.updateShoppingCount();
             }
 
             renderProgress() {
                 const stats = this.getTotalStats();
                 document.getElementById('completion-percent').textContent = stats.completionPercent + '%';
                 document.getElementById('progress-fill').style.width = stats.completionPercent + '%';
+            }
+
+            updateShoppingCount() {
+                let shoppingItemCount = 0;
+                
+                this.data.categories.forEach(category => {
+                    category.items.forEach(item => {
+                        if (item.needToBuy) {
+                            shoppingItemCount++;
+                        }
+                    });
+                });
+                
+                document.getElementById('shopping-count').textContent = `(${shoppingItemCount})`;
             }
 
             renderCategories() {
