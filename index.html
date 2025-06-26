@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimplePack - Smart Packing Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .progress {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .progress-number {
+            font-size: 2.5em;
+            font-weight: 200;
+            color: #4a9eff;
+            margin-bottom: 4px;
+        }
+
+        .progress-label {
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 400;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #2a2a2a;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4a9eff;
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 32px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab.active {
+            background: #4a9eff;
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+        }
+
+        .category {
+            margin-bottom: 32px;
+        }
+
+        .category-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+            padding: 12px 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .item:hover {
+            background: #222;
+        }
+
+        .item.packed {
+            background: #1a2e1a;
+            border: 1px solid #2d4a2d;
+        }
+
+        .item.to-buy {
+            background: #2e1a1a;
+            border: 1px solid #4a2d2d;
+        }
+
+        .check-circle {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .item.packed .check-circle {
+            background: #4a9eff;
+            border-color: #4a9eff;
+            color: white;
+        }
+
+        .item.partial .check-circle {
+            background: linear-gradient(180deg, #4a9eff 50%, transparent 50%);
+            border-color: #4a9eff;
+        }
+
+        .check-circle::after {
+            content: '✓';
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .item.packed .check-circle::after {
+            opacity: 1;
+        }
+
+        .item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-name {
+            font-weight: 500;
+            font-size: 1em;
+            color: #fff;
+        }
+
+        .item.packed .item-name {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .item.to-buy {
+            background: #2e1a1a;
+            border: 1px solid #4a2d2d;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .item.to-buy .check-circle {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 4px 8px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            color: #888;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #444;
+            color: #fff;
+        }
+
+        .qty-display {
+            min-width: 20px;
+            text-align: center;
+            font-weight: 500;
+            color: #fff;
+            font-size: 0.9em;
+        }
+
+        .buy-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 6px 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .buy-btn.active {
+            background: #ff6b6b;
+            border-color: #ff6b6b;
+            color: white;
+        }
+
+        .add-item {
+            background: #1a1a1a;
+            border: 2px dashed #333;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-item:hover {
+            border-color: #4a9eff;
+            background: #1e1e1e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 158, 255, 0.15);
+        }
+
+        .add-item.active {
+            border-color: #4a9eff;
+            background: #1e1e1e;
+            transform: scale(1.02);
+        }
+
+        .add-item input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1em;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            padding: 4px 0;
+        }
+
+        .add-item input::placeholder {
+            color: #666;
+        }
+
+        .add-item-text {
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .add-item:hover .add-item-text {
+            color: #4a9eff;
+        }
+
+        .add-category {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+            border: 2px dashed rgba(102, 126, 234, 0.5);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+
+        .add-category:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .add-category.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .add-category input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            text-align: center;
+            width: 100%;
+            outline: none;
+            padding: 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .add-category input::placeholder {
+            color: #666;
+            text-transform: none;
+            letter-spacing: normal;
+            font-weight: normal;
+        }
+
+        .add-category-text {
+            color: #666;
+            transition: all 0.2s ease;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .add-category:hover .add-category-text {
+            color: #667eea;
+        }
+
+        .credits {
+            text-align: center;
+            padding: 20px 20px;
+            color: #666;
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        .clear-data-btn {
+            display: block;
+            margin: 40px auto 20px;
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .clear-data-btn:hover {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.05);
+            transform: scale(1.02);
+        }
+
+        .shopping-list {
+            padding: 20px 0;
+        }
+
+        .shopping-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .shopping-item:hover {
+            background: #222;
+        }
+
+        .shopping-name {
+            font-weight: 500;
+            color: #fff;
+            flex: 1;
+        }
+
+        .shopping-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shopping-qty {
+            color: #ff6b6b;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .bought-btn {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bought-btn:hover {
+            background: #3a89df;
+            transform: scale(1.05);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 300px;
+            width: 90%;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .modal h3 {
+            color: #fff;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .modal p {
+            color: #888;
+            margin-bottom: 24px;
+            font-size: 0.9em;
+        }
+
+        .modal-input {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 1.1em;
+            text-align: center;
+            width: 100px;
+            margin: 0 auto 24px;
+            display: block;
+            outline: none;
+        }
+
+        .modal-input:focus {
+            border-color: #4a9eff;
+            box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            font-size: 0.9em;
+        }
+
+        .modal-btn.primary {
+            background: #4a9eff;
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #3a89df;
+        }
+
+        .modal-btn.secondary {
+            background: #333;
+            color: #ccc;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #444;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 12px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .item {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SimplePack</h1>
+        </div>
+
+        <div class="progress">
+            <div class="progress-number" id="completion-percent">0%</div>
+            <div class="progress-label">Packed</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="packing">Pack</div>
+            <div class="tab" data-tab="shopping">Shop</div>
+        </div>
+
+        <div id="packing-view">
+            <div id="categories-container"></div>
+        </div>
+
+        <div id="shopping-view" class="hidden">
+            <div class="shopping-list">
+                <div id="shopping-items"></div>
+            </div>
+        </div>
+
+        <div id="buy-modal" class="modal-overlay hidden" style="display: none !important;">
+            <div class="modal">
+                <h3>How many to buy?</h3>
+                <p id="modal-item-name"></p>
+                <input type="number" id="modal-quantity" class="modal-input" value="1" min="1">
+                <div class="modal-buttons">
+                    <button class="modal-btn secondary" onclick="closeBuyModal()">Cancel</button>
+                    <button class="modal-btn primary" onclick="confirmBuy()">Add to shopping list</button>
+                </div>
+            </div>
+        </div>
+
+        <button class="clear-data-btn" onclick="clearAllData()">CLEAR ALL DATA</button>
+
+        <div class="credits">
+            Made by Nastino, hoping it helps make packing simple.
+        </div>
+    </div>
+
+    <script>
+        // Emergency modal close functions - available immediately
+        function closeBuyModal() {
+            const modal = document.getElementById('buy-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        function confirmBuy() {
+            const modal = document.getElementById('buy-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
+
+        // Clear any stuck localStorage data
+        localStorage.removeItem('packcraft-data');
+        localStorage.removeItem('simplepack-data');
+
+        class PackCraftApp {
+            constructor() {
+                this.data = {
+                    categories: [
+                        {
+                            name: 'Clothing',
+                            items: [
+                                { name: 'T-shirts', quantity: 3, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Jeans', quantity: 2, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Underwear', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Socks', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Trainers', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                            ]
+                        },
+                        {
+                            name: 'Toiletries',
+                            items: [
+                                { name: 'Toothbrush', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Toothpaste', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Shower Gel', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                            ]
+                        },
+                        {
+                            name: 'Tech',
+                            items: [
+                                { name: 'Phone Charger', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Battery Pack', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                            ]
+                        },
+                        {
+                            name: 'Travel',
+                            items: [
+                                { name: 'Passport', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                { name: 'Tickets', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                            ]
+                        }
+                    ]
+                };
+                
+                this.currentBuyItem = null;
+                this.init();
+            }
+
+            init() {
+                this.loadData();
+                this.setupEventListeners();
+                this.currentBuyItem = null;
+                this.render();
+            }
+
+            loadData() {
+                const saved = localStorage.getItem('simplepack-data');
+                if (saved) {
+                    try {
+                        this.data = JSON.parse(saved);
+                        this.data.categories.forEach(category => {
+                            category.items.forEach(item => {
+                                if (item.buyQuantity === undefined) {
+                                    item.buyQuantity = 0;
+                                }
+                            });
+                        });
+                    } catch (e) {
+                        console.log('Error loading saved data, using defaults');
+                    }
+                }
+            }
+
+            saveData() {
+                localStorage.setItem('simplepack-data', JSON.stringify(this.data));
+            }
+
+            setupEventListeners() {
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                        
+                        const tabName = e.target.dataset.tab;
+                        document.getElementById('packing-view').classList.toggle('hidden', tabName !== 'packing');
+                        document.getElementById('shopping-view').classList.toggle('hidden', tabName !== 'shopping');
+                        
+                        if (tabName === 'shopping') {
+                            this.renderShoppingList();
+                        }
+                    });
+                });
+            }
+
+            togglePacking(categoryIndex, itemIndex) {
+                const item = this.data.categories[categoryIndex].items[itemIndex];
+                
+                // Prevent packing items that need to be bought
+                if (item.needToBuy) {
+                    return;
+                }
+                
+                if (item.packed === 0) {
+                    item.packed = item.quantity;
+                } else {
+                    item.packed = 0;
+                }
+                
+                this.saveData();
+                this.render();
+            }
+
+            updateQuantity(categoryIndex, itemIndex, newQuantity) {
+                if (newQuantity < 1) return;
+                
+                const item = this.data.categories[categoryIndex].items[itemIndex];
+                item.quantity = newQuantity;
+                
+                if (item.packed > newQuantity) {
+                    item.packed = newQuantity;
+                }
+                
+                this.saveData();
+                this.render();
+            }
+
+            toggleShopping(categoryIndex, itemIndex) {
+                const item = this.data.categories[categoryIndex].items[itemIndex];
+                
+                if (item.needToBuy) {
+                    item.needToBuy = false;
+                    item.buyQuantity = 0;
+                    this.saveData();
+                    this.render();
+                } else {
+                    this.currentBuyItem = { categoryIndex, itemIndex };
+                    document.getElementById('modal-item-name').textContent = item.name;
+                    document.getElementById('modal-quantity').value = item.quantity;
+                    const modal = document.getElementById('buy-modal');
+                    modal.classList.remove('hidden');
+                    modal.style.display = 'flex';
+                    document.getElementById('modal-quantity').focus();
+                    document.getElementById('modal-quantity').select();
+                }
+            }
+
+            closeBuyModal() {
+                const modal = document.getElementById('buy-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+                this.currentBuyItem = null;
+            }
+
+            confirmBuy() {
+                if (!this.currentBuyItem) {
+                    this.closeBuyModal();
+                    return;
+                }
+                
+                const { categoryIndex, itemIndex } = this.currentBuyItem;
+                const item = this.data.categories[categoryIndex].items[itemIndex];
+                const buyQuantity = parseInt(document.getElementById('modal-quantity').value) || 1;
+                
+                item.needToBuy = true;
+                item.buyQuantity = buyQuantity;
+                
+                this.closeBuyModal();
+                this.saveData();
+                this.render();
+            }
+
+            markAsBought(categoryIndex, itemIndex) {
+                const item = this.data.categories[categoryIndex].items[itemIndex];
+                item.needToBuy = false;
+                item.buyQuantity = 0;
+                
+                this.saveData();
+                this.render();
+                
+                // Immediately refresh shopping list if we're on that tab
+                const activeTab = document.querySelector('.tab.active');
+                if (activeTab && activeTab.dataset.tab === 'shopping') {
+                    this.renderShoppingList();
+                }
+            }
+
+            addItem(categoryIndex, itemName) {
+                if (!itemName.trim()) return;
+                
+                this.data.categories[categoryIndex].items.push({
+                    name: itemName.trim(),
+                    quantity: 1,
+                    packed: 0,
+                    needToBuy: false,
+                    buyQuantity: 0
+                });
+                
+                this.saveData();
+                this.render();
+            }
+
+            addCategory(categoryName) {
+                if (!categoryName.trim()) return;
+                
+                this.data.categories.push({
+                    name: categoryName.trim(),
+                    items: []
+                });
+                
+                this.saveData();
+                this.render();
+            }
+
+            deleteItem(categoryIndex, itemIndex) {
+                this.data.categories[categoryIndex].items.splice(itemIndex, 1);
+                this.saveData();
+                this.render();
+            }
+
+            clearData() {
+                const confirmed = confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.');
+                if (confirmed) {
+                    localStorage.removeItem('simplepack-data');
+                    // Reset to default data
+                    this.data = {
+                        categories: [
+                            {
+                                name: 'Clothing',
+                                items: [
+                                    { name: 'T-shirts', quantity: 3, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Jeans', quantity: 2, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Underwear', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Socks', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Trainers', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                                ]
+                            },
+                            {
+                                name: 'Toiletries',
+                                items: [
+                                    { name: 'Toothbrush', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Toothpaste', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Shower Gel', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                                ]
+                            },
+                            {
+                                name: 'Tech',
+                                items: [
+                                    { name: 'Phone Charger', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Battery Pack', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                                ]
+                            },
+                            {
+                                name: 'Travel',
+                                items: [
+                                    { name: 'Passport', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
+                                    { name: 'Tickets', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
+                                ]
+                            }
+                        ]
+                    };
+                    this.render();
+                }
+            }
+
+            getTotalStats() {
+                let totalItems = 0;
+                let totalPacked = 0;
+                
+                this.data.categories.forEach(category => {
+                    category.items.forEach(item => {
+                        totalItems += item.quantity;
+                        totalPacked += item.packed;
+                    });
+                });
+                
+                const completionPercent = totalItems > 0 ? Math.round((totalPacked / totalItems) * 100) : 0;
+                
+                return { totalItems, totalPacked, completionPercent };
+            }
+
+            render() {
+                const modal = document.getElementById('buy-modal');
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+                this.currentBuyItem = null;
+                
+                this.renderProgress();
+                this.renderCategories();
+            }
+
+            renderProgress() {
+                const stats = this.getTotalStats();
+                document.getElementById('completion-percent').textContent = stats.completionPercent + '%';
+                document.getElementById('progress-fill').style.width = stats.completionPercent + '%';
+            }
+
+            renderCategories() {
+                const container = document.getElementById('categories-container');
+                container.innerHTML = '';
+                
+                this.data.categories.forEach((category, categoryIndex) => {
+                    const categoryEl = document.createElement('div');
+                    categoryEl.className = 'category';
+                    
+                    categoryEl.innerHTML = `
+                        <div class="category-title">${category.name}</div>
+                        ${category.items.map((item, itemIndex) => this.renderItem(item, categoryIndex, itemIndex)).join('')}
+                        <div class="add-item" onclick="app.showAddItem(this, ${categoryIndex})">
+                            <input type="text" placeholder="Add item..." style="display:none;" data-category="${categoryIndex}">
+                            <div class="add-item-text">+ Add item</div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(categoryEl);
+                    
+                    const input = categoryEl.querySelector('input');
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.addItem(categoryIndex, input.value);
+                            input.value = '';
+                            this.hideAddItem(categoryEl);
+                        }
+                    });
+                    
+                    input.addEventListener('blur', () => {
+                        setTimeout(() => this.hideAddItem(categoryEl), 100);
+                    });
+                });
+
+                // Add new category section
+                const addCategoryEl = document.createElement('div');
+                addCategoryEl.innerHTML = `
+                    <div class="add-category" onclick="app.showAddCategory(this)">
+                        <input type="text" placeholder="Enter category name..." style="display:none;">
+                        <div class="add-category-text">+ Add Category</div>
+                    </div>
+                `;
+                
+                container.appendChild(addCategoryEl);
+                
+                const categoryInput = addCategoryEl.querySelector('input');
+                categoryInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.addCategory(categoryInput.value);
+                        categoryInput.value = '';
+                        this.hideAddCategory(addCategoryEl);
+                    }
+                });
+                
+                categoryInput.addEventListener('blur', () => {
+                    setTimeout(() => this.hideAddCategory(addCategoryEl), 100);
+                });
+            }
+
+            showAddItem(element, categoryIndex) {
+                const input = element.querySelector('input');
+                const text = element.querySelector('.add-item-text');
+                
+                element.classList.add('active');
+                input.style.display = 'block';
+                text.style.display = 'none';
+                input.focus();
+            }
+
+            hideAddItem(categoryEl) {
+                const addItem = categoryEl.querySelector('.add-item');
+                const input = addItem.querySelector('input');
+                const text = addItem.querySelector('.add-item-text');
+                
+                addItem.classList.remove('active');
+                input.style.display = 'none';
+                text.style.display = 'block';
+                input.value = '';
+            }
+
+            showAddCategory(element) {
+                const input = element.querySelector('input');
+                const text = element.querySelector('.add-category-text');
+                
+                element.classList.add('active');
+                input.style.display = 'block';
+                text.style.display = 'none';
+                input.focus();
+            }
+
+            hideAddCategory(categoryEl) {
+                const addCategory = categoryEl.querySelector('.add-category');
+                const input = addCategory.querySelector('input');
+                const text = addCategory.querySelector('.add-category-text');
+                
+                addCategory.classList.remove('active');
+                input.style.display = 'none';
+                text.style.display = 'block';
+                input.value = '';
+            }
+
+            renderItem(item, categoryIndex, itemIndex) {
+                const packingStatus = item.packed === 0 ? '' : 
+                                    item.packed === item.quantity ? 'packed' : 'partial';
+                
+                const itemClasses = ['item'];
+                if (packingStatus) itemClasses.push(packingStatus);
+                if (item.needToBuy) itemClasses.push('to-buy');
+                
+                const clickHandler = item.needToBuy ? '' : `onclick="app.togglePacking(${categoryIndex}, ${itemIndex})"`;
+                
+                return `
+                    <div class="${itemClasses.join(' ')}" ${clickHandler}>
+                        <div class="check-circle"></div>
+                        <div class="item-content">
+                            <div class="item-name">${item.name}</div>
+                        </div>
+                        <div class="item-actions" onclick="event.stopPropagation()">
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="app.updateQuantity(${categoryIndex}, ${itemIndex}, ${item.quantity - 1})">−</button>
+                                <div class="qty-display">${item.quantity}</div>
+                                <button class="qty-btn" onclick="app.updateQuantity(${categoryIndex}, ${itemIndex}, ${item.quantity + 1})">+</button>
+                            </div>
+                            <button class="buy-btn ${item.needToBuy ? 'active' : ''}" 
+                                    onclick="app.toggleShopping(${categoryIndex}, ${itemIndex})">
+                                Buy
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderShoppingList() {
+                const container = document.getElementById('shopping-items');
+                const shoppingItems = [];
+                
+                this.data.categories.forEach((category, categoryIndex) => {
+                    category.items.forEach((item, itemIndex) => {
+                        if (item.needToBuy) {
+                            shoppingItems.push({
+                                name: item.name,
+                                quantity: item.buyQuantity,
+                                categoryIndex,
+                                itemIndex
+                            });
+                        }
+                    });
+                });
+                
+                if (shoppingItems.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">✨</div>
+                            <div>Nothing to buy</div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = shoppingItems.map(item => `
+                        <div class="shopping-item">
+                            <div class="shopping-name">${item.name}</div>
+                            <div class="shopping-actions">
+                                <div class="shopping-qty">${item.quantity}</div>
+                                <button class="bought-btn" onclick="app.markAsBought(${item.categoryIndex}, ${item.itemIndex})">
+                                    Bought
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // Enhanced global functions for modal and clear data
+        function closeBuyModal() {
+            const modal = document.getElementById('buy-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            if (window.app) {
+                window.app.currentBuyItem = null;
+            }
+        }
+
+        function confirmBuy() {
+            const modal = document.getElementById('buy-modal');
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+            if (window.app && window.app.currentBuyItem) {
+                const { categoryIndex, itemIndex } = window.app.currentBuyItem;
+                const item = window.app.data.categories[categoryIndex].items[itemIndex];
+                const buyQuantity = parseInt(document.getElementById('modal-quantity').value) || 1;
+                
+                item.needToBuy = true;
+                item.buyQuantity = buyQuantity;
+                
+                window.app.currentBuyItem = null;
+                window.app.saveData();
+                window.app.render();
+            }
+        }
+
+        function clearAllData() {
+            const confirmed = confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.');
+            if (confirmed && window.app) {
+                window.app.clearData();
+            }
+        }
+
+        // Initialize the app
+        window.app = new PackCraftApp();
+    </script>
+</body>
+</html>
