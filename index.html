@@ -458,6 +458,41 @@
             opacity: 1;
         }
 
+        .ultra-btn {
+            display: none;
+            margin: 10px auto;
+            background: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            animation: ultraButtonPulse 0.5s ease-in-out infinite alternate;
+        }
+
+        .turbo-mode .ultra-btn {
+            display: block;
+        }
+
+        .ultra-btn:hover {
+            transform: scale(1.1);
+            animation: ultraButtonCrazy 0.2s ease-in-out infinite;
+        }
+
+        @keyframes ultraButtonPulse {
+            0% { box-shadow: 0 0 10px #ff0000; }
+            100% { box-shadow: 0 0 25px #ffff00; }
+        }
+
+        @keyframes ultraButtonCrazy {
+            0%, 100% { transform: scale(1.1) rotate(0deg); }
+            25% { transform: scale(1.15) rotate(-2deg); }
+            75% { transform: scale(1.05) rotate(2deg); }
+        }
+
         /* Fire Theme Styles */
         body.turbo-mode {
             background: linear-gradient(135deg, #1a0000 0%, #330000 25%, #4d0000 50%, #1a0000 75%, #000000 100%);
@@ -613,6 +648,254 @@
             100% { box-shadow: 0 0 20px #ffff00; }
         }
 
+        /* ULTRA MODE - Ridiculously Extreme */
+        body.ultra-mode {
+            background: linear-gradient(45deg, #ff0000 0%, #ff8c00 12.5%, #ffff00 25%, #ff0000 37.5%, #ff8c00 50%, #ffff00 62.5%, #ff0000 75%, #ff8c00 87.5%, #ffff00 100%);
+            animation: ultraChaos 0.3s linear infinite, screenShake 0.1s ease-in-out infinite;
+        }
+
+        @keyframes ultraChaos {
+            0% { filter: hue-rotate(0deg) contrast(1.5) saturate(2); }
+            25% { filter: hue-rotate(90deg) contrast(2) saturate(3); }
+            50% { filter: hue-rotate(180deg) contrast(1.8) saturate(2.5); }
+            75% { filter: hue-rotate(270deg) contrast(2.2) saturate(3.5); }
+            100% { filter: hue-rotate(360deg) contrast(1.5) saturate(2); }
+        }
+
+        @keyframes screenShake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+            20% { transform: translate(2px, 1px) rotate(0.5deg); }
+            30% { transform: translate(-1px, 2px) rotate(-0.3deg); }
+            40% { transform: translate(1px, -2px) rotate(0.3deg); }
+            50% { transform: translate(-2px, 1px) rotate(-0.2deg); }
+            60% { transform: translate(2px, -1px) rotate(0.2deg); }
+            70% { transform: translate(-1px, -2px) rotate(-0.4deg); }
+            80% { transform: translate(1px, 2px) rotate(0.4deg); }
+            90% { transform: translate(-2px, -2px) rotate(-0.1deg); }
+        }
+
+        .ultra-mode .header h1 {
+            animation: ultraTitleMadness 0.2s ease-in-out infinite, titleSpin 2s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes ultraTitleMadness {
+            0% { 
+                color: #ff0000; 
+                text-shadow: 0 0 30px #ff0000, 0 0 60px #ffff00, 0 0 90px #ff8c00;
+                transform: scale(1) skew(0deg);
+            }
+            25% { 
+                color: #ffff00; 
+                text-shadow: 0 0 40px #ffff00, 0 0 80px #ff0000, 0 0 120px #ff8c00;
+                transform: scale(1.1) skew(2deg);
+            }
+            50% { 
+                color: #ff8c00; 
+                text-shadow: 0 0 50px #ff8c00, 0 0 100px #ffff00, 0 0 150px #ff0000;
+                transform: scale(0.9) skew(-2deg);
+            }
+            75% { 
+                color: #ff4500; 
+                text-shadow: 0 0 35px #ff4500, 0 0 70px #ff0000, 0 0 105px #ffff00;
+                transform: scale(1.05) skew(1deg);
+            }
+            100% { 
+                color: #ff0000; 
+                text-shadow: 0 0 30px #ff0000, 0 0 60px #ffff00, 0 0 90px #ff8c00;
+                transform: scale(1) skew(0deg);
+            }
+        }
+
+        @keyframes titleSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .ultra-mode .progress {
+            animation: ultraProgressChaos 0.15s ease-in-out infinite, progressBounce 0.3s ease-in-out infinite;
+        }
+
+        @keyframes ultraProgressChaos {
+            0%, 100% { 
+                background: linear-gradient(135deg, #ff0000 0%, #ffff00 50%, #ff8c00 100%);
+                transform: scale(1) rotate(0deg);
+            }
+            33% { 
+                background: linear-gradient(135deg, #ffff00 0%, #ff8c00 50%, #ff0000 100%);
+                transform: scale(1.1) rotate(2deg);
+            }
+            66% { 
+                background: linear-gradient(135deg, #ff8c00 0%, #ff0000 50%, #ffff00 100%);
+                transform: scale(0.95) rotate(-2deg);
+            }
+        }
+
+        @keyframes progressBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .ultra-mode .tabs {
+            animation: ultraTabMadness 0.1s ease-in-out infinite;
+        }
+
+        @keyframes ultraTabMadness {
+            0%, 100% { transform: scale(1) rotate(0deg) skew(0deg); }
+            25% { transform: scale(1.05) rotate(1deg) skew(1deg); }
+            50% { transform: scale(0.98) rotate(-1deg) skew(-1deg); }
+            75% { transform: scale(1.03) rotate(0.5deg) skew(0.5deg); }
+        }
+
+        .ultra-mode .tab.active {
+            animation: ultraActiveTab 0.08s ease-in-out infinite;
+        }
+
+        @keyframes ultraActiveTab {
+            0%, 100% { 
+                background: #ff0000; 
+                color: #ffff00;
+                transform: scale(1);
+            }
+            50% { 
+                background: #ffff00; 
+                color: #ff0000;
+                transform: scale(1.15);
+            }
+        }
+
+        .ultra-mode .category-title {
+            animation: ultraCategoryMadness 0.12s ease-in-out infinite;
+        }
+
+        @keyframes ultraCategoryMadness {
+            0%, 100% { 
+                transform: scale(1) translateX(0) rotate(0deg);
+                background: linear-gradient(135deg, #ff0000 0%, #ffff00 50%, #ff8c00 100%);
+            }
+            20% { 
+                transform: scale(1.08) translateX(-3px) rotate(-1deg);
+                background: linear-gradient(135deg, #ffff00 0%, #ff8c00 50%, #ff0000 100%);
+            }
+            40% { 
+                transform: scale(0.95) translateX(3px) rotate(1deg);
+                background: linear-gradient(135deg, #ff8c00 0%, #ff0000 50%, #ffff00 100%);
+            }
+            60% { 
+                transform: scale(1.03) translateX(-2px) rotate(-0.5deg);
+                background: linear-gradient(135deg, #ff4500 0%, #ffff00 50%, #ff0000 100%);
+            }
+            80% { 
+                transform: scale(1.01) translateX(2px) rotate(0.5deg);
+                background: linear-gradient(135deg, #ffff00 0%, #ff0000 50%, #ff8c00 100%);
+            }
+        }
+
+        .ultra-mode .item {
+            animation: ultraItemChaos 0.05s ease-in-out infinite;
+        }
+
+        @keyframes ultraItemChaos {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                background: linear-gradient(135deg, #ff8c00 0%, #ff0000 100%);
+            }
+            10% { 
+                transform: translate(-2px, -1px) rotate(-1deg) scale(1.02);
+                background: linear-gradient(135deg, #ff0000 0%, #ffff00 100%);
+            }
+            20% { 
+                transform: translate(2px, 1px) rotate(1deg) scale(0.98);
+                background: linear-gradient(135deg, #ffff00 0%, #ff8c00 100%);
+            }
+            30% { 
+                transform: translate(-1px, 2px) rotate(0.5deg) scale(1.01);
+                background: linear-gradient(135deg, #ff8c00 0%, #ff0000 100%);
+            }
+            40% { 
+                transform: translate(1px, -2px) rotate(-0.5deg) scale(0.99);
+                background: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
+            }
+            50% { 
+                transform: translate(-2px, 1px) rotate(1.5deg) scale(1.03);
+                background: linear-gradient(135deg, #ffff00 0%, #ff0000 100%);
+            }
+            60% { 
+                transform: translate(2px, -1px) rotate(-1.5deg) scale(0.97);
+                background: linear-gradient(135deg, #ff8c00 0%, #ffff00 100%);
+            }
+            70% { 
+                transform: translate(-1px, -2px) rotate(0.8deg) scale(1.02);
+                background: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
+            }
+            80% { 
+                transform: translate(1px, 2px) rotate(-0.8deg) scale(0.98);
+                background: linear-gradient(135deg, #ffff00 0%, #ff0000 100%);
+            }
+            90% { 
+                transform: translate(-2px, -1px) rotate(0.3deg) scale(1.01);
+                background: linear-gradient(135deg, #ff8c00 0%, #ffff00 100%);
+            }
+        }
+
+        .ultra-mode .item-name {
+            animation: ultraTextFlicker 0.1s ease-in-out infinite;
+        }
+
+        @keyframes ultraTextFlicker {
+            0%, 100% { 
+                color: #ffff00;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.8), 0 0 10px #ff0000;
+            }
+            50% { 
+                color: #ff0000;
+                text-shadow: 1px 1px 2px rgba(255,255,0,0.8), 0 0 15px #ffff00;
+            }
+        }
+
+        .ultra-mode .buy-btn {
+            animation: ultraButtonMadness 0.06s ease-in-out infinite;
+        }
+
+        @keyframes ultraButtonMadness {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                background: #ff0000;
+                border-color: #ffff00;
+            }
+            25% { 
+                transform: scale(1.2) rotate(5deg);
+                background: #ffff00;
+                border-color: #ff0000;
+            }
+            50% { 
+                transform: scale(0.8) rotate(-5deg);
+                background: #ff8c00;
+                border-color: #ff0000;
+            }
+            75% { 
+                transform: scale(1.1) rotate(3deg);
+                background: #ff4500;
+                border-color: #ffff00;
+            }
+        }
+
+        .ultra-mode .turbo-btn {
+            animation: ultraTurboButton 0.04s ease-in-out infinite;
+        }
+
+        @keyframes ultraTurboButton {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg) translateY(0);
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                transform: scale(1.3) rotate(10deg) translateY(-5px);
+                filter: hue-rotate(180deg);
+            }
+        }
+
         .shopping-list {
             padding: 20px 0;
         }
@@ -702,11 +985,12 @@
         .modal {
             background: #1a1a1a;
             border-radius: 16px;
-            padding: 32px;
-            max-width: 300px;
+            padding: 32px 24px;
+            max-width: 320px;
             width: 90%;
             text-align: center;
             border: 1px solid #333;
+            margin: 20px;
         }
 
         .modal h3 {
@@ -744,6 +1028,8 @@
             display: flex;
             gap: 12px;
             justify-content: center;
+            padding: 0 12px;
+            margin-top: 24px;
         }
 
         .modal-btn {
@@ -775,6 +1061,90 @@
             background: #444;
         }
 
+        .template-selector-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .template-selector-overlay.hidden {
+            display: none !important;
+        }
+
+        .template-selector {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px 24px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #333;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .template-selector h2 {
+            color: #fff;
+            font-size: 1.8em;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .template-selector p {
+            color: #888;
+            margin-bottom: 32px;
+            font-size: 1em;
+        }
+
+        .template-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .template-option {
+            background: #2a2a2a;
+            border: 2px solid #333;
+            border-radius: 16px;
+            padding: 24px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .template-option:hover {
+            border-color: #4a9eff;
+            background: #333;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(74, 158, 255, 0.15);
+        }
+
+        .template-icon {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+        }
+
+        .template-name {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .template-description {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.3;
+        }
+
         @media (max-width: 480px) {
             .container {
                 padding: 16px 12px;
@@ -787,10 +1157,57 @@
             .item {
                 padding: 16px;
             }
+            
+            .template-selector {
+                padding: 32px 16px;
+            }
+            
+            .template-options {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            
+            .template-option {
+                padding: 20px 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="template-selector" class="template-selector-overlay hidden">
+        <div class="template-selector">
+            <h2>What are you packing for?</h2>
+            <p>Choose a template to get started</p>
+            <div class="template-options">
+                <div class="template-option" onclick="app.selectTemplate('city')">
+                    <div class="template-icon">🏙️</div>
+                    <div class="template-name">City Break</div>
+                    <div class="template-description">Weekend getaway essentials</div>
+                </div>
+                <div class="template-option" onclick="app.selectTemplate('beach')">
+                    <div class="template-icon">🏖️</div>
+                    <div class="template-name">Beach Holiday</div>
+                    <div class="template-description">Sun, sand & relaxation</div>
+                </div>
+                <div class="template-option" onclick="app.selectTemplate('camping')">
+                    <div class="template-icon">🏕️</div>
+                    <div class="template-name">Camping Trip</div>
+                    <div class="template-description">Outdoor adventure gear</div>
+                </div>
+                <div class="template-option" onclick="app.selectTemplate('business')">
+                    <div class="template-icon">💼</div>
+                    <div class="template-name">Business Trip</div>
+                    <div class="template-description">Professional travel needs</div>
+                </div>
+                <div class="template-option" onclick="app.selectTemplate('blank')">
+                    <div class="template-icon">📋</div>
+                    <div class="template-name">Blank Template</div>
+                    <div class="template-description">Start from scratch</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>SimplePack</h1>
@@ -834,6 +1251,7 @@
         <button class="clear-data-btn" onclick="clearAllData()">CLEAR ALL DATA</button>
 
         <button class="turbo-btn" onclick="app.toggleTurboMode()" id="turbo-btn">Click to pack faster</button>
+        <button class="ultra-btn" onclick="app.toggleUltraMode()" id="ultra-btn">Pack even faster</button>
 
         <div class="credits">
             Made by Nastino, hoping it helps make packing simple.
@@ -856,45 +1274,211 @@
 
         class PackCraftApp {
             constructor() {
-                this.data = {
-                    categories: [
-                        {
-                            name: 'Clothing',
-                            items: [
-                                { name: 'T-shirts', quantity: 3, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Jeans', quantity: 2, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Underwear', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Socks', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Trainers', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                            ]
-                        },
-                        {
-                            name: 'Toiletries',
-                            items: [
-                                { name: 'Toothbrush', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Toothpaste', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Shower Gel', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                            ]
-                        },
-                        {
-                            name: 'Tech',
-                            items: [
-                                { name: 'Phone Charger', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Battery Pack', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                            ]
-                        },
-                        {
-                            name: 'Travel',
-                            items: [
-                                { name: 'Passport', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                { name: 'Tickets', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                            ]
-                        }
-                    ]
+                this.templates = {
+                    city: {
+                        name: 'City Break',
+                        categories: [
+                            {
+                                name: 'Clothing',
+                                items: [
+                                    { name: 'Trainers', quantity: 1 },
+                                    { name: 'Jeans', quantity: 2 },
+                                    { name: 'T-shirts', quantity: 3 },
+                                    { name: 'Sweater/hoodie', quantity: 1 },
+                                    { name: 'Jacket', quantity: 1 },
+                                    { name: 'Underwear', quantity: 4 },
+                                    { name: 'Socks', quantity: 4 }
+                                ]
+                            },
+                            {
+                                name: 'Tech',
+                                items: [
+                                    { name: 'Phone', quantity: 1 },
+                                    { name: 'Phone charger', quantity: 1 },
+                                    { name: 'Headphones', quantity: 1 },
+                                    { name: 'Battery pack', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Essentials',
+                                items: [
+                                    { name: 'Passport', quantity: 1 },
+                                    { name: 'Wallet', quantity: 1 },
+                                    { name: 'Sunglasses', quantity: 1 },
+                                    { name: 'ID', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Personal Care',
+                                items: [
+                                    { name: 'Toothbrush', quantity: 1 },
+                                    { name: 'Toothpaste', quantity: 1 },
+                                    { name: 'Deodorant', quantity: 1 },
+                                    { name: 'Shower Gel', quantity: 1 }
+                                ]
+                            }
+                        ]
+                    },
+                    beach: {
+                        name: 'Beach Holiday',
+                        categories: [
+                            {
+                                name: 'Clothing',
+                                items: [
+                                    { name: 'Shorts', quantity: 3 },
+                                    { name: 'T-Shirts', quantity: 5 },
+                                    { name: 'Light jacket', quantity: 1 },
+                                    { name: 'Trainers', quantity: 1 },
+                                    { name: 'Sandals', quantity: 1 },
+                                    { name: 'Underwear', quantity: 7 },
+                                    { name: 'Socks', quantity: 3 },
+                                    { name: 'Hat', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Beachwear',
+                                items: [
+                                    { name: 'Swimwear', quantity: 2 },
+                                    { name: 'Flip-flops', quantity: 1 },
+                                    { name: 'Beach towel', quantity: 2 },
+                                    { name: 'Sunglasses', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Personal Care',
+                                items: [
+                                    { name: 'Suncream', quantity: 1 },
+                                    { name: 'Lip balm with SPF', quantity: 1 },
+                                    { name: 'Toothbrush', quantity: 1 },
+                                    { name: 'Toothpaste', quantity: 1 },
+                                    { name: 'Deodorant', quantity: 1 },
+                                    { name: 'Shower Gel', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Tech',
+                                items: [
+                                    { name: 'Phone', quantity: 1 },
+                                    { name: 'Phone charger', quantity: 1 },
+                                    { name: 'Headphones', quantity: 1 },
+                                    { name: 'Battery pack', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Essentials',
+                                items: [
+                                    { name: 'Passport', quantity: 1 },
+                                    { name: 'Beach bag', quantity: 1 },
+                                    { name: 'Water bottle', quantity: 1 }
+                                ]
+                            }
+                        ]
+                    },
+                    camping: {
+                        name: 'Camping Trip',
+                        categories: [
+                            {
+                                name: 'Outdoor Gear',
+                                items: [
+                                    { name: 'Tent', quantity: 1 },
+                                    { name: 'Sleeping bag', quantity: 1 },
+                                    { name: 'Camping chair', quantity: 1 },
+                                    { name: 'Torch', quantity: 1 },
+                                    { name: 'Backpack', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Clothing',
+                                items: [
+                                    { name: 'Hiking boots', quantity: 1 },
+                                    { name: 'Waterproof jacket', quantity: 1 },
+                                    { name: 'Fleece', quantity: 1 },
+                                    { name: 'Base layers', quantity: 2 },
+                                    { name: 'Hiking trousers', quantity: 2 },
+                                    { name: 'Warm socks', quantity: 4 },
+                                    { name: 'Underwear', quantity: 4 },
+                                    { name: 'Hat', quantity: 1 },
+                                    { name: 'Gloves', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Personal Care',
+                                items: [
+                                    { name: 'Toothbrush', quantity: 1 },
+                                    { name: 'Toothpaste', quantity: 1 },
+                                    { name: 'Deodorant', quantity: 1 },
+                                    { name: 'Shower Gel', quantity: 1 },
+                                    { name: 'Suncream', quantity: 1 },
+                                    { name: 'First aid kit', quantity: 1 },
+                                    { name: 'Insect repellent', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Food & Cooking',
+                                items: [
+                                    { name: 'Camping stove', quantity: 1 },
+                                    { name: 'Lightweight cookware', quantity: 1 },
+                                    { name: 'Non-perishable food', quantity: 1 },
+                                    { name: 'Water bottles', quantity: 2 }
+                                ]
+                            }
+                        ]
+                    },
+                    business: {
+                        name: 'Business Trip',
+                        categories: [
+                            {
+                                name: 'Clothing',
+                                items: [
+                                    { name: 'Trainers', quantity: 1 },
+                                    { name: 'Jeans', quantity: 1 },
+                                    { name: 'T-shirts', quantity: 2 },
+                                    { name: 'Sweater/hoodie', quantity: 1 },
+                                    { name: 'Jacket', quantity: 1 },
+                                    { name: 'Underwear', quantity: 3 },
+                                    { name: 'Socks', quantity: 3 }
+                                ]
+                            },
+                            {
+                                name: 'Professional',
+                                items: [
+                                    { name: 'Professional Outfit', quantity: 2 },
+                                    { name: 'Shoes', quantity: 1 },
+                                    { name: 'Belt', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Tech',
+                                items: [
+                                    { name: 'Laptop', quantity: 1 },
+                                    { name: 'Laptop Charger', quantity: 1 },
+                                    { name: 'Phone', quantity: 1 },
+                                    { name: 'Phone charger', quantity: 1 },
+                                    { name: 'Notebook', quantity: 1 },
+                                    { name: 'Pens', quantity: 2 },
+                                    { name: 'Battery Pack', quantity: 1 }
+                                ]
+                            },
+                            {
+                                name: 'Personal Care',
+                                items: [
+                                    { name: 'Toothbrush', quantity: 1 },
+                                    { name: 'Toothpaste', quantity: 1 },
+                                    { name: 'Deodorant', quantity: 1 },
+                                    { name: 'Shower Gel', quantity: 1 }
+                                ]
+                            }
+                        ]
+                    },
+                    blank: {
+                        name: 'Blank Template',
+                        categories: []
+                    }
                 };
-                
+
+                this.data = { categories: [] };
                 this.currentBuyItem = null;
-                this.turboMode = false;
+                this.mode = 'normal'; // normal, turbo, ultra
                 this.init();
             }
 
@@ -902,7 +1486,49 @@
                 this.loadData();
                 this.setupEventListeners();
                 this.currentBuyItem = null;
-                this.render();
+                
+                // Check if this is first time or no data
+                if (!this.hasData()) {
+                    this.showTemplateSelector();
+                } else {
+                    this.render();
+                }
+            }
+
+            hasData() {
+                return this.data.categories && this.data.categories.length > 0;
+            }
+
+            showTemplateSelector() {
+                const selector = document.getElementById('template-selector');
+                selector.classList.remove('hidden');
+            }
+
+            hideTemplateSelector() {
+                const selector = document.getElementById('template-selector');
+                selector.classList.add('hidden');
+            }
+
+            selectTemplate(templateType) {
+                const template = this.templates[templateType];
+                
+                if (template) {
+                    // Deep clone the template to avoid reference issues
+                    this.data.categories = template.categories.map(category => ({
+                        name: category.name,
+                        items: category.items.map(item => ({
+                            name: item.name,
+                            quantity: item.quantity,
+                            packed: 0,
+                            needToBuy: false,
+                            buyQuantity: 0
+                        }))
+                    }));
+                    
+                    this.saveData();
+                    this.hideTemplateSelector();
+                    this.render();
+                }
             }
 
             loadData() {
@@ -911,7 +1537,7 @@
                     try {
                         const savedData = JSON.parse(saved);
                         this.data = savedData.data || savedData; // Handle both old and new format
-                        this.turboMode = savedData.turboMode || false;
+                        this.mode = savedData.mode || (savedData.turboMode ? 'turbo' : 'normal'); // Migration from old format
                         
                         this.data.categories.forEach(category => {
                             category.items.forEach(item => {
@@ -922,14 +1548,18 @@
                         });
                     } catch (e) {
                         console.log('Error loading saved data, using defaults');
+                        this.data = { categories: [] };
                     }
+                } else {
+                    // No saved data, start with empty
+                    this.data = { categories: [] };
                 }
             }
 
             saveData() {
                 const dataToSave = {
                     data: this.data,
-                    turboMode: this.turboMode
+                    mode: this.mode
                 };
                 localStorage.setItem('simplepack-data', JSON.stringify(dataToSave));
             }
@@ -998,8 +1628,7 @@
                     const modal = document.getElementById('buy-modal');
                     modal.classList.remove('hidden');
                     modal.style.display = 'flex';
-                    document.getElementById('modal-quantity').focus();
-                    document.getElementById('modal-quantity').select();
+                    // Removed focus() and select() to prevent keyboard popup
                 }
             }
 
@@ -1077,48 +1706,13 @@
             }
 
             clearData() {
-                const confirmed = confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.');
-                if (confirmed) {
+                if (confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.')) {
                     localStorage.removeItem('simplepack-data');
-                    this.turboMode = false;
-                    // Reset to default data
-                    this.data = {
-                        categories: [
-                            {
-                                name: 'Clothing',
-                                items: [
-                                    { name: 'T-shirts', quantity: 3, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Jeans', quantity: 2, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Underwear', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Socks', quantity: 7, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Trainers', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                                ]
-                            },
-                            {
-                                name: 'Toiletries',
-                                items: [
-                                    { name: 'Toothbrush', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Toothpaste', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Shower Gel', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                                ]
-                            },
-                            {
-                                name: 'Tech',
-                                items: [
-                                    { name: 'Phone Charger', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Battery Pack', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                                ]
-                            },
-                            {
-                                name: 'Travel',
-                                items: [
-                                    { name: 'Passport', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 },
-                                    { name: 'Tickets', quantity: 1, packed: 0, needToBuy: false, buyQuantity: 0 }
-                                ]
-                            }
-                        ]
-                    };
+                    this.mode = 'normal';
+                    this.data = { categories: [] };
                     this.render();
+                    // Show template selector after clearing
+                    this.showTemplateSelector();
                 }
             }
 
@@ -1147,26 +1741,45 @@
                 this.renderProgress();
                 this.renderCategories();
                 this.updateShoppingCount();
-                this.applyTurboMode();
+                this.applyMode();
             }
 
-            applyTurboMode() {
+            applyMode() {
                 const body = document.body;
                 const turboBtn = document.getElementById('turbo-btn');
+                const ultraBtn = document.getElementById('ultra-btn');
                 
-                if (this.turboMode) {
+                // Remove all mode classes
+                body.classList.remove('turbo-mode', 'ultra-mode');
+                
+                if (this.mode === 'normal') {
+                    turboBtn.textContent = 'Click to pack faster';
+                    ultraBtn.style.display = 'none';
+                } else if (this.mode === 'turbo') {
                     body.classList.add('turbo-mode');
                     turboBtn.textContent = 'Slow down';
-                } else {
-                    body.classList.remove('turbo-mode');
-                    turboBtn.textContent = 'Click to pack faster';
+                    ultraBtn.style.display = 'block';
+                } else if (this.mode === 'ultra') {
+                    body.classList.add('ultra-mode');
+                    turboBtn.textContent = 'Slow down';
+                    ultraBtn.style.display = 'block';
                 }
             }
 
             toggleTurboMode() {
-                this.turboMode = !this.turboMode;
+                if (this.mode === 'normal') {
+                    this.mode = 'turbo';
+                } else {
+                    this.mode = 'normal';
+                }
                 this.saveData();
-                this.applyTurboMode();
+                this.applyMode();
+            }
+
+            toggleUltraMode() {
+                this.mode = 'ultra';
+                this.saveData();
+                this.applyMode();
             }
 
             renderProgress() {
@@ -1390,8 +2003,7 @@
         }
 
         function clearAllData() {
-            const confirmed = confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.');
-            if (confirmed && window.app) {
+            if (window.app) {
                 window.app.clearData();
             }
         }
