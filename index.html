@@ -437,6 +437,182 @@
             transform: scale(1.02);
         }
 
+        .turbo-btn {
+            display: block;
+            margin: 20px auto;
+            background: transparent;
+            border: 1px solid #333;
+            color: #555;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7em;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            opacity: 0.6;
+        }
+
+        .turbo-btn:hover {
+            border-color: #ff8c00;
+            color: #ff8c00;
+            opacity: 1;
+        }
+
+        /* Fire Theme Styles */
+        body.turbo-mode {
+            background: linear-gradient(135deg, #1a0000 0%, #330000 25%, #4d0000 50%, #1a0000 75%, #000000 100%);
+            animation: fireGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fireGlow {
+            0% { background: linear-gradient(135deg, #1a0000 0%, #330000 25%, #4d0000 50%, #1a0000 75%, #000000 100%); }
+            100% { background: linear-gradient(135deg, #330000 0%, #4d0000 25%, #660000 50%, #330000 75%, #1a0000 100%); }
+        }
+
+        .turbo-mode .header h1 {
+            color: #ff6600;
+            text-shadow: 0 0 20px #ff4500, 0 0 40px #ff8c00;
+            animation: flamePulse 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes flamePulse {
+            0% { text-shadow: 0 0 20px #ff4500, 0 0 40px #ff8c00; }
+            100% { text-shadow: 0 0 30px #ff0000, 0 0 60px #ffff00; }
+        }
+
+        .turbo-mode .progress {
+            background: linear-gradient(135deg, #ff4500 0%, #ff8c00 50%, #ffff00 100%);
+            border: 2px solid #ff6600;
+            animation: urgentShake 0.5s ease-in-out infinite;
+        }
+
+        .turbo-mode .progress-number {
+            color: #000;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .turbo-mode .progress-label {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .turbo-mode .progress-fill {
+            background: linear-gradient(90deg, #ff0000 0%, #ff8c00 50%, #ffff00 100%);
+        }
+
+        .turbo-mode .tabs {
+            background: linear-gradient(135deg, #ff4500 0%, #ff8c00 100%);
+            border: 2px solid #ff6600;
+            animation: urgentPulse 1s ease-in-out infinite;
+        }
+
+        .turbo-mode .tab {
+            color: #000;
+            font-weight: bold;
+        }
+
+        .turbo-mode .tab.active {
+            background: #ff0000;
+            color: #ffff00;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            animation: activeFlame 0.8s ease-in-out infinite alternate;
+        }
+
+        .turbo-mode .category-title {
+            background: linear-gradient(135deg, #ff4500 0%, #ff8c00 50%, #ff0000 100%);
+            color: #ffff00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            animation: categoryFlame 1.2s ease-in-out infinite alternate;
+        }
+
+        .turbo-mode .item {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff4500 100%);
+            border: 1px solid #ff6600;
+            animation: itemShake 0.3s ease-in-out infinite;
+        }
+
+        .turbo-mode .item-name {
+            color: #ffff00;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            font-weight: bold;
+        }
+
+        .turbo-mode .qty-control {
+            background: #ff0000;
+            border: 1px solid #ffff00;
+        }
+
+        .turbo-mode .qty-display {
+            color: #ffff00;
+            font-weight: bold;
+        }
+
+        .turbo-mode .buy-btn {
+            background: #ff4500;
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            font-weight: bold;
+            animation: buttonFlame 0.6s ease-in-out infinite alternate;
+        }
+
+        .turbo-mode .buy-btn.active {
+            background: #ff0000;
+            color: #ffff00;
+            animation: activeBuyFlame 0.4s ease-in-out infinite;
+        }
+
+        .turbo-mode .turbo-btn {
+            background: linear-gradient(135deg, #ff0000 0%, #ff8c00 100%);
+            border: 2px solid #ffff00;
+            color: #ffff00;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            animation: turboButtonFlame 1s ease-in-out infinite alternate;
+        }
+
+        @keyframes urgentShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-2px) rotate(-0.5deg); }
+            75% { transform: translateX(2px) rotate(0.5deg); }
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes activeFlame {
+            0% { background: #ff0000; transform: scale(1); }
+            100% { background: #ff4500; transform: scale(1.05); }
+        }
+
+        @keyframes categoryFlame {
+            0% { box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4); }
+            100% { box-shadow: 0 6px 25px rgba(255, 255, 0, 0.6); }
+        }
+
+        @keyframes itemShake {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            33% { transform: translateX(-1px) translateY(-1px); }
+            66% { transform: translateX(1px) translateY(1px); }
+        }
+
+        @keyframes buttonFlame {
+            0% { box-shadow: 0 0 5px #ff4500; }
+            100% { box-shadow: 0 0 15px #ffff00; }
+        }
+
+        @keyframes activeBuyFlame {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes turboButtonFlame {
+            0% { box-shadow: 0 0 10px #ff0000; }
+            100% { box-shadow: 0 0 20px #ffff00; }
+        }
+
         .shopping-list {
             padding: 20px 0;
         }
@@ -657,6 +833,8 @@
 
         <button class="clear-data-btn" onclick="clearAllData()">CLEAR ALL DATA</button>
 
+        <button class="turbo-btn" onclick="app.toggleTurboMode()" id="turbo-btn">Click to pack faster</button>
+
         <div class="credits">
             Made by Nastino, hoping it helps make packing simple.
         </div>
@@ -675,10 +853,6 @@
             modal.classList.add('hidden');
             modal.style.display = 'none';
         }
-
-        // Clear any stuck localStorage data
-        localStorage.removeItem('packcraft-data');
-        localStorage.removeItem('simplepack-data');
 
         class PackCraftApp {
             constructor() {
@@ -720,6 +894,7 @@
                 };
                 
                 this.currentBuyItem = null;
+                this.turboMode = false;
                 this.init();
             }
 
@@ -734,7 +909,10 @@
                 const saved = localStorage.getItem('simplepack-data');
                 if (saved) {
                     try {
-                        this.data = JSON.parse(saved);
+                        const savedData = JSON.parse(saved);
+                        this.data = savedData.data || savedData; // Handle both old and new format
+                        this.turboMode = savedData.turboMode || false;
+                        
                         this.data.categories.forEach(category => {
                             category.items.forEach(item => {
                                 if (item.buyQuantity === undefined) {
@@ -749,7 +927,11 @@
             }
 
             saveData() {
-                localStorage.setItem('simplepack-data', JSON.stringify(this.data));
+                const dataToSave = {
+                    data: this.data,
+                    turboMode: this.turboMode
+                };
+                localStorage.setItem('simplepack-data', JSON.stringify(dataToSave));
             }
 
             setupEventListeners() {
@@ -898,6 +1080,7 @@
                 const confirmed = confirm('Are you sure you want to clear all data?\n\nThis will remove:\n• All packing progress\n• Your shopping list\n• All custom items and categories you\'ve added\n\nThis cannot be undone.');
                 if (confirmed) {
                     localStorage.removeItem('simplepack-data');
+                    this.turboMode = false;
                     // Reset to default data
                     this.data = {
                         categories: [
@@ -964,6 +1147,26 @@
                 this.renderProgress();
                 this.renderCategories();
                 this.updateShoppingCount();
+                this.applyTurboMode();
+            }
+
+            applyTurboMode() {
+                const body = document.body;
+                const turboBtn = document.getElementById('turbo-btn');
+                
+                if (this.turboMode) {
+                    body.classList.add('turbo-mode');
+                    turboBtn.textContent = 'Slow down';
+                } else {
+                    body.classList.remove('turbo-mode');
+                    turboBtn.textContent = 'Click to pack faster';
+                }
+            }
+
+            toggleTurboMode() {
+                this.turboMode = !this.turboMode;
+                this.saveData();
+                this.applyTurboMode();
             }
 
             renderProgress() {
